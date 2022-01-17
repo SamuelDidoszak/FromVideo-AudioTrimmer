@@ -14,6 +14,9 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>window.fxml</include>
+                    <include>style.css</include>
+                    <include>audioform.png</include>
+                    <include>full.png</include>
                 </includes>
             </resource>
         </resources>
