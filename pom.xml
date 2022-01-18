@@ -19,6 +19,12 @@
                     <include>full.png</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>src/main/audiowaveform</directory>
+                <includes>
+                    <include>audiowaveform.exe</include>
+                </includes>
+            </resource>
         </resources>
     </build>
 

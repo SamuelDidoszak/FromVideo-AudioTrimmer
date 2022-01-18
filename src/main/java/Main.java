@@ -16,6 +16,9 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Main extends Application {
     double windowWidth = 1280;
     double windowHeight = 720;
@@ -25,10 +28,23 @@ public class Main extends Application {
         BorderPane root = FXMLLoader.load(getClass().getResource("/window.fxml"));
         primaryStage.setTitle("Audio Cutter");
 
+        System.out.println("jeff");
         Scene scene = new Scene(root, windowWidth, windowHeight);
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        handleFile();
+
+    }
+
+    public void handleFile() {
+        Path filePath = Paths.get("C:\\Users\\Jeff\\Desktop\\programmierenMachen\\java\\AudioCutter\\test\\KaguraSuzu.wav");
+        AudioFile audioFile = new AudioFile(filePath);
+//        audioFile.copyToDirectory();
+
+        AudioWaveform audioWaveform = new AudioWaveform(audioFile);
+        audioWaveform.startProcess();
     }
 
 
@@ -36,3 +52,30 @@ public class Main extends Application {
         launch(args);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
