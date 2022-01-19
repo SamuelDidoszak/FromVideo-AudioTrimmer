@@ -26,6 +26,9 @@
     -fx-alignment: center;
     -fx-text-alignment: center;
 }
+.info-label {
+    -fx-font-size: 60px;
+}
 .button-container {
     -fx-padding: 4em;
 }
