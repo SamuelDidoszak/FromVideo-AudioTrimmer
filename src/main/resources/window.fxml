@@ -40,7 +40,7 @@
     <right>
         <VBox styleClass="button-container" alignment="CENTER">
             <JFXButton prefWidth="100" prefHeight="40" buttonType="RAISED" text="save" styleClass="save-button"
-                       style="-fx-font-size:14px;"/>
+                       style="-fx-font-size:14px;" onMouseClicked="#saveFile"/>
         </VBox>
 
     </right>

@@ -1,8 +1,10 @@
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 
@@ -12,11 +14,18 @@ import java.nio.file.Paths;
 
 public class Controller {
     private SimpleStringProperty filePath;
+    private SimpleBooleanProperty saveFile;
 
     public SimpleStringProperty getFilePath() {
         if(filePath == null)
             filePath = new SimpleStringProperty();
         return filePath;
+    }
+
+    public SimpleBooleanProperty getSaveFile() {
+        if(saveFile == null)
+            saveFile = new SimpleBooleanProperty();
+        return saveFile;
     }
 
     @FXML
@@ -61,4 +70,19 @@ public class Controller {
                 new Thread(runnable).start();
         }
     }
+
+    public void saveFile(MouseEvent mouseEvent) {
+        saveFile.set(!saveFile.get());
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

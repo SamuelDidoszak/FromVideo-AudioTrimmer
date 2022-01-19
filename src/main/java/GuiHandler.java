@@ -131,7 +131,7 @@ public class GuiHandler {
 
     /**
      * Initiates the length of lengthTextField and endTextField
-     * @param length time in milliseconds
+     * @param length time in seconds with millisecond decimal part
      */
     public void initiateLengths(float length) {
         TextField textField = (TextField) scene.lookup("#lengthTextField");

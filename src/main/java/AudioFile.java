@@ -24,6 +24,10 @@ public class AudioFile {
             e.printStackTrace();
         }
         AudioFormat format = audioInputStream.getFormat();
+        System.out.println("frames: " + path.toFile().length() / format.getFrameSize());
+        System.out.println("framerate: " + format.getFrameRate());
+        System.out.println("seconds: " + path.toFile().length() / (format.getFrameSize() * format.getFrameRate()));
+
         length = path.toFile().length() / (format.getFrameSize() * format.getFrameRate());
     }
 
@@ -41,6 +45,47 @@ public class AudioFile {
                 System.out.println("File already exists");
             else
                 e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     * @param start start second
+     * @param end if it's the same as the total audioFile length it's omitted
+     */
+    public void trimAudioFile(double start, double end) {
+        AudioInputStream audioInputStream = null;
+        AudioInputStream trimmedInputStream = null;
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(path.toFile());
+            AudioFormat format = audioInputStream.getFormat();
+
+            int bytesPerSecond = format.getFrameSize() * (int) format.getFrameRate();
+                //  skips in seconds. Decimal part is left
+            audioInputStream.skip((long)start * bytesPerSecond);
+            long framesOfAudioToCopy;
+            if(end != length)
+                framesOfAudioToCopy = (long) (end - start) * (int) format.getFrameRate();
+            else
+                framesOfAudioToCopy = audioInputStream.getFrameLength() - (long) (start * format.getFrameRate());
+            System.out.println("frames to copy: " + framesOfAudioToCopy);
+            trimmedInputStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
+
+            System.out.println("file output path: " + path.toString() + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf(".")));
+            AudioSystem.write(trimmedInputStream, AudioSystem.getAudioFileFormat(path.toFile()).getType(), new File(path.toString() + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf("."))));
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (audioInputStream != null) try {
+                audioInputStream.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            if (trimmedInputStream != null) try {
+                trimmedInputStream.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 

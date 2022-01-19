@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -28,6 +30,13 @@ public class Main extends Application {
         Controller controller = loader.getController();
         controller.getFilePath().addListener((observableValue, s, t1) -> {
             fileRecievedHandler(observableValue.getValue());
+        });
+
+        controller.getSaveFile().addListener((observableValue, aBoolean, t1) -> {
+            System.out.println("SAVE FILE");
+            double start = ((TextFieldCustom) scene.lookup("#startTextField")).getTimeValue();
+            double end = ((TextFieldCustom) scene.lookup("#endTextField")).getTimeValue();
+            audioFile.trimAudioFile(start, end);
         });
 
     }
