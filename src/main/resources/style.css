@@ -48,6 +48,7 @@
     -fx-pref-width: 15%;
     -fx-background-color: #272727;
     -fx-text-alignment: center;
+    -fx-text-fill: WHITE;
 }
 .button-container {
     -alignment: center;

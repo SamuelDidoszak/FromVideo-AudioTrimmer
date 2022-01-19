@@ -18,7 +18,7 @@
     <top>
         <VBox styleClass="audio-container" fx:id="audioContainer" prefHeight="${container.height * 2/3}" maxHeight="${container.height * 2/3}">
             <ImageView styleClass="audio-box" fitWidth="${container.width}" fitHeight="${audioContainer.height * 0.9}"/>
-            <Rectangle fill="#000000" width="${container.width}" height="${container.height * 2/3 * 0.1}"/>
+            <Rectangle fill="#121212" width="${container.width}" height="${container.height * 2/3 * 0.1}"/>
 <!--                            <ImageView styleClass="small-audio-box" fitWidth="${container.width}" fitHeight="${container.height * 2/3 * 0.1}"/>-->
         </VBox>
     </top>

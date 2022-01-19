@@ -13,8 +13,15 @@ public class AudioWaveform {
 
         runCommand = audioWaveformPath +
                 " --input-filename " + targetDirPath + audioFile.getFileName() +
-                " --output-filename " + targetDirPath + "full1.png" +
-                " --background-color 121212";
+                " --output-filename " + targetDirPath + "full.png" +
+                " --background-color 121212" +
+                " --waveform-color b39ddb" +
+                " --amplitude-scale auto" +
+                " --zoom auto" +
+                " --border-color 121212" +
+                " --no-axis-labels" +
+                " --width 30000" +
+                " --height 720";
 
 
         // Sadly, starting the process via ProcessBuilder doesn't work. It only does, when arguments passed make the program print something and not work
@@ -31,6 +38,7 @@ public class AudioWaveform {
      */
     public boolean startProcess() {
         try {
+            long t1 = System.currentTimeMillis();
             process = Runtime.getRuntime().exec(runCommand);
 //            int waitFlag = process.waitFor();
 //            if(waitFlag == 0) {
@@ -44,6 +52,10 @@ public class AudioWaveform {
                 System.out.println(line);
             }
             process.waitFor();
+            if(process.exitValue() == 0) {
+                long t2 = System.currentTimeMillis();
+                System.out.println("time: " + (t2 - t1));
+            }
             return true;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

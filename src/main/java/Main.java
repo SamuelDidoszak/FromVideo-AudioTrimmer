@@ -23,19 +23,24 @@ public class Main extends Application {
     double windowWidth = 1280;
     double windowHeight = 720;
 
+    Gui gui;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         BorderPane root = FXMLLoader.load(getClass().getResource("/window.fxml"));
         primaryStage.setTitle("Audio Cutter");
 
-        System.out.println("jeff");
         Scene scene = new Scene(root, windowWidth, windowHeight);
 
         primaryStage.setScene(scene);
         primaryStage.show();
+        gui = new Gui(primaryStage, scene);
 
+        application();
+    }
+
+    public void application() {
         handleFile();
-
     }
 
     public void handleFile() {
@@ -44,7 +49,8 @@ public class Main extends Application {
 //        audioFile.copyToDirectory();
 
         AudioWaveform audioWaveform = new AudioWaveform(audioFile);
-        audioWaveform.startProcess();
+//        audioWaveform.startProcess();
+        gui.setAudioLength(audioFile.getLength());
     }
 
 
