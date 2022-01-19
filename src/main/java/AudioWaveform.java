@@ -15,7 +15,7 @@ public class AudioWaveform {
                 " --input-filename " + targetDirPath + audioFile.getFileName() +
                 " --output-filename " + targetDirPath + "full.png" +
                 " --background-color 121212" +
-                " --waveform-color b39ddb" +
+                " --waveform-color 937ac2" +
                 " --amplitude-scale auto" +
                 " --zoom auto" +
                 " --border-color 121212" +

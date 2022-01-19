@@ -18,40 +18,29 @@
             fx:controller="Controller" onDragOver="#handleDragOver" onDragDropped="#handleDragDrop">
     <top>
         <VBox styleClass="audio-container" fx:id="audioContainer" prefHeight="${container.height * 2/3}" maxHeight="${container.height * 2/3}">
-            <StackPane fx:id="stackPane" prefWidth="${container.width}" prefHeight="${audioContainer.height * 0.9}">
-                <ImageView styleClass="audio-box" fitWidth="${container.width}" fitHeight="${audioContainer.height * 0.9}"/>
-                <Label styleClass="info-label" fx:id="infoLabel" alignment="CENTER">Drag And Drop</Label>
-            </StackPane>
+            <Label styleClass="info-label" fx:id="infoLabel" prefWidth="${container.width}" prefHeight="${audioContainer.height * 0.9}">Drag And Drop</Label>
+            <ImageView styleClass="audio-box" fx:id="mainImage" fitWidth="${container.width}" fitHeight="${audioContainer.height * 0.9}"/>
             <Rectangle fill="#121212" width="${container.width}" height="${container.height * 2/3 * 0.1}"/>
 <!--                            <ImageView styleClass="small-audio-box" fitWidth="${container.width}" fitHeight="${container.height * 2/3 * 0.1}"/>-->
         </VBox>
     </top>
     <center>
-        <GridPane styleClass="values-container" prefHeight="${container.height * 1/3}" alignment="CENTER_LEFT" vgap="2" hgap="50">
+        <GridPane styleClass="value-container" fx:id="valueContainer" prefHeight="${container.height * 1/3}" alignment="CENTER_LEFT" vgap="2" hgap="50">
             <Label styleClass="label"
                 GridPane.columnIndex="0"
                 GridPane.rowIndex="0">start</Label>
-            <TextField styleClass="text-field" fx:id="startTextField" promptText="00:00"
-                       GridPane.columnIndex="0"
-                       GridPane.rowIndex="1"/>
             <Label styleClass="label"
                    GridPane.columnIndex="1"
                    GridPane.rowIndex="0">end</Label>
-            <TextField styleClass="text-field" fx:id="endTextField" promptText="00:00"
-                       GridPane.columnIndex="1"
-                       GridPane.rowIndex="1"/>
             <Label styleClass="label"
                    GridPane.columnIndex="2"
                    GridPane.rowIndex="0">length</Label>
-            <TextField styleClass="text-field" fx:id="lengthTextField" promptText="00:00" disable="true"
-                       GridPane.columnIndex="2"
-                       GridPane.rowIndex="1"/>
         </GridPane>
     </center>
     <right>
         <VBox styleClass="button-container" alignment="CENTER">
             <JFXButton prefWidth="100" prefHeight="40" buttonType="RAISED" text="save" styleClass="save-button"
-                       style="-fx-font-size:14px;-fx-background-color:WHITE;"/>
+                       style="-fx-font-size:14px;"/>
         </VBox>
 
     </right>

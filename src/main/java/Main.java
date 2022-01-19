@@ -1,5 +1,4 @@
 import javafx.application.Application;
-import javafx.beans.value.ObservableStringValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -10,8 +9,8 @@ import java.nio.file.Paths;
 
 public class Main extends Application {
     private FXMLLoader loader;
-    private Gui gui;
-    boolean imageCreated;
+    private GuiHandler guiHandler;
+    private AudioFile audioFile;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -23,36 +22,27 @@ public class Main extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
-        gui = new Gui(primaryStage, scene);
+        guiHandler = new GuiHandler(primaryStage, scene);
 
-        imageCreated = false;
 
-        application();
-    }
-
-    public void application() {
         Controller controller = loader.getController();
         controller.getFilePath().addListener((observableValue, s, t1) -> {
-            handleFile(observableValue.getValue());
+            fileRecievedHandler(observableValue.getValue());
         });
-
 
     }
 
-    public void handleFile(String string) {
+    public void fileRecievedHandler(String string) {
         Path filePath = Paths.get(string);
-        AudioFile audioFile = new AudioFile(filePath);
+        audioFile = new AudioFile(filePath);
         audioFile.copyToDirectory();
 
         AudioWaveform audioWaveform = new AudioWaveform(audioFile);
         audioWaveform.startProcess();
-        gui.setAudioLength(audioFile.getLength());
-        if(!imageCreated) {
-            gui.createImageView();
-            imageCreated = true;
-        }
-        gui.setImage();
-
+        guiHandler.initiateLengths(audioFile.getLength());
+        guiHandler.createImageView();
+        guiHandler.setImage();
+        guiHandler.setListeners();
     }
 
 

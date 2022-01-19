@@ -32,6 +32,8 @@
 .button {
     -fx-padding: 0.7em 0.57em;
     -fx-font-size: 14px;
+    -fx-background-color: #937ac2;
+    -fx-text-fill: BLACK;
 }
 .button-raised {
     -fx-padding: 0.7em 0.57em;
@@ -41,7 +43,7 @@
     -fx-pref-width: 200;
     -fx-text-fill: WHITE;
 }
-.values-container {
+.value-container {
     -fx-padding: 6em;
 }
 .text-field {
