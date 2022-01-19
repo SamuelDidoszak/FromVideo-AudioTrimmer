@@ -18,10 +18,7 @@
             fx:controller="Controller" onDragOver="#handleDragOver" onDragDropped="#handleDragDrop">
     <top>
         <VBox styleClass="audio-container" fx:id="audioContainer" prefHeight="${container.height * 2/3}" maxHeight="${container.height * 2/3}">
-            <StackPane fx:id="stackPane" prefWidth="${container.width}" prefHeight="${audioContainer.height * 0.9}">
-                <ImageView styleClass="audio-box" fitWidth="${container.width}" fitHeight="${audioContainer.height * 0.9}"/>
-                <Label styleClass="info-label" fx:id="infoLabel" alignment="CENTER">Drag And Drop</Label>
-            </StackPane>
+            <Label styleClass="info-label" fx:id="infoLabel" prefWidth="${container.width}" prefHeight="${audioContainer.height * 0.9}">Drag And Drop</Label>
             <Rectangle fill="#121212" width="${container.width}" height="${container.height * 2/3 * 0.1}"/>
 <!--                            <ImageView styleClass="small-audio-box" fitWidth="${container.width}" fitHeight="${container.height * 2/3 * 0.1}"/>-->
         </VBox>

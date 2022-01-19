@@ -5,11 +5,7 @@
 .root{
     -fx-background-color: #121212;
 }
-.label{
-    -fx-text-fill: #fff;
-}
 .audio-box {
-    -fx-image: url('full.png');
     -fx-background-repeat: no-repeat;
     -fx-background-position: center center;
 }
@@ -27,6 +23,7 @@
     -fx-text-alignment: center;
 }
 .info-label {
+    -fx-alignment: center;
     -fx-font-size: 60px;
 }
 .button-container {

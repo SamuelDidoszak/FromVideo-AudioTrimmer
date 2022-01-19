@@ -2,10 +2,7 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 
 public class AudioFile {
     private String fileName;
@@ -28,8 +25,6 @@ public class AudioFile {
         }
         AudioFormat format = audioInputStream.getFormat();
         length = path.toFile().length() / (format.getFrameSize() * format.getFrameRate());
-
-        System.out.println("length: " + length);
     }
 
     /**
@@ -42,7 +37,10 @@ public class AudioFile {
         try {
             Files.copy(path, outputPath);
         } catch (IOException e) {
-            e.printStackTrace();
+            if(e.getClass().equals(FileAlreadyExistsException.class))
+                System.out.println("File already exists");
+            else
+                e.printStackTrace();
         }
     }
 

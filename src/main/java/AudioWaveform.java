@@ -54,7 +54,7 @@ public class AudioWaveform {
             process.waitFor();
             if(process.exitValue() == 0) {
                 long t2 = System.currentTimeMillis();
-                System.out.println("time: " + (t2 - t1));
+                System.out.println("execution time: " + (t2 - t1));
             }
             return true;
         } catch (IOException | InterruptedException e) {

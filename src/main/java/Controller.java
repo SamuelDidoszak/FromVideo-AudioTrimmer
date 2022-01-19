@@ -1,23 +1,29 @@
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Controller {
-    @FXML
-    Label infoLabel;
+    private SimpleStringProperty filePath;
+
+    public SimpleStringProperty getFilePath() {
+        if(filePath == null)
+            filePath = new SimpleStringProperty();
+        return filePath;
+    }
 
     @FXML
-    StackPane stackPane;
+    private Label infoLabel;
+
+    @FXML
+    private VBox audioContainer;
 
     @FXML
     private void handleDragOver(DragEvent event) {
@@ -38,7 +44,8 @@ public class Controller {
             case ".flac":
             case ".ogg":
             case ".opus":
-                stackPane.getChildren().remove(infoLabel);
+                audioContainer.getChildren().remove(infoLabel);
+                filePath.set(path.toString());
                 break;
             default:
                 infoLabel.setText("Unsupported file");
@@ -53,6 +60,5 @@ public class Controller {
                 };
                 new Thread(runnable).start();
         }
-
     }
 }
