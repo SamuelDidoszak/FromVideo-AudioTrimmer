@@ -24,9 +24,6 @@ public class AudioFile {
             e.printStackTrace();
         }
         AudioFormat format = audioInputStream.getFormat();
-        System.out.println("frames: " + path.toFile().length() / format.getFrameSize());
-        System.out.println("framerate: " + format.getFrameRate());
-        System.out.println("seconds: " + path.toFile().length() / (format.getFrameSize() * format.getFrameRate()));
 
         length = path.toFile().length() / (format.getFrameSize() * format.getFrameRate());
     }
@@ -68,11 +65,10 @@ public class AudioFile {
                 framesOfAudioToCopy = (long) (end - start) * (int) format.getFrameRate();
             else
                 framesOfAudioToCopy = audioInputStream.getFrameLength() - (long) (start * format.getFrameRate());
-            System.out.println("frames to copy: " + framesOfAudioToCopy);
             trimmedInputStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
 
-            System.out.println("file output path: " + path.toString() + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf(".")));
-            AudioSystem.write(trimmedInputStream, AudioSystem.getAudioFileFormat(path.toFile()).getType(), new File(path.toString() + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf("."))));
+            System.out.println("file output path: " + path.getParent().toString() + "\\" + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf(".")));
+            AudioSystem.write(trimmedInputStream, AudioSystem.getAudioFileFormat(path.toFile()).getType(), new File(path.getParent().toString() + "\\" + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf("."))));
         } catch (Exception e) {
             System.out.println(e);
         } finally {

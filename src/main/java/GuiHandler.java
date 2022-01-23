@@ -30,7 +30,7 @@ public class GuiHandler {
     }
 
     public void setListeners() {
-        scene.setOnScroll(scrollEvent -> rescaleImage(scrollEvent.getX(), scrollEvent.getY(), scrollEvent.getDeltaY()));
+//        scene.setOnScroll(scrollEvent -> rescaleImage(scrollEvent.getX(), scrollEvent.getY(), scrollEvent.getDeltaY()));
 
         imageView.setOnMouseClicked(mouseEvent -> {
             double audioLength = ((TextFieldCustom) scene.lookup("#lengthTextField")).getTimeValue();

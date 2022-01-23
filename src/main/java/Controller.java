@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 public class Controller {
     private SimpleStringProperty filePath;
     private SimpleBooleanProperty saveFile;
+    private boolean firstFile = true;
 
     public SimpleStringProperty getFilePath() {
         if(filePath == null)
@@ -49,11 +50,14 @@ public class Controller {
         String fileExtension = path.toString().substring(path.toString().lastIndexOf("."));
         switch(fileExtension) {
             case ".wav":
-            case ".mp3":
-            case ".flac":
-            case ".ogg":
-            case ".opus":
-                audioContainer.getChildren().remove(infoLabel);
+//            case ".mp3":
+//            case ".flac":
+//            case ".ogg":
+//            case ".opus":
+                if(firstFile) {
+                    audioContainer.getChildren().remove(infoLabel);
+                    firstFile = false;
+                }
                 filePath.set(path.toString());
                 break;
             default:

@@ -15,8 +15,6 @@
                 <includes>
                     <include>window.fxml</include>
                     <include>style.css</include>
-                    <include>audioform.png</include>
-                    <include>full.png</include>
                 </includes>
             </resource>
             <resource>
