@@ -1,7 +1,4 @@
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
 
 public class AudioWaveform {
     private String runCommand;
@@ -15,7 +12,7 @@ public class AudioWaveform {
                 " --input-filename " + targetDirPath + audioFile.getFileName() +
                 " --output-filename " + targetDirPath + "full.json" +
                 " --bits " + "8" +
-                " --pixels-per-second 500";
+                " --pixels-per-second 100";
 
 
         // Sadly, starting the process via ProcessBuilder doesn't work. It only does, when arguments passed make the program print something and not work

@@ -48,7 +48,7 @@ public class Main extends Application {
         audioWaveform.startProcess();
         guiHandler.initiateLengths(audioFile.getLength());
         guiHandler.createChart();
-        guiHandler.setImage();
+        guiHandler.setChartValues();
         guiHandler.setListeners();
     }
 

@@ -1,22 +1,18 @@
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import netscape.javascript.JSObject;
+import javafx.util.StringConverter;
 import org.gillius.jfxutils.chart.StableTicksAxis;
 
-import javax.sound.sampled.Line;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Scanner;
 
 
@@ -115,30 +111,74 @@ public class GuiHandler {
         chartCreated = true;
     }
 
+    public String parseResolution(int i) {
+        int seconds = i / 200;
+        return String.valueOf(seconds / 60) + String.valueOf(seconds % 60);
+    }
+
     /**
-     * Sets the imageView image
+     * Sets the chart data values
      */
-    public void setImage() {
+    public void setChartValues() {
         try {
             LineChart mainChart = (LineChart) scene.lookup("#mainChart");
             File dataSrc = new File(getClass().getResource("full.json").toString().substring(6));
             Scanner scanner = new Scanner(dataSrc);
             String dataString = scanner.next();
             dataString = dataString.substring(dataString.indexOf(":[") + 2, dataString.length() -2);
-            ArrayList<Integer> data = new ArrayList<>();
+            ArrayList<XYChart.Data<Integer, Integer>> data = new ArrayList<>();
+            int i = 0;
             for(String val : dataString.split(",")) {
-                data.add(Integer.valueOf(val));
+                data.add(new XYChart.Data(i, Integer.valueOf(val)));
+                i++;
             }
+
+            ((StableTicksAxis)scene.lookup("#xAxis")).setTickLabelFormatter(new StringConverter() {
+                @Override
+                public String toString(Object o) {
+                    return parseResolution((int)o);
+                }
+
+                @Override
+                public Integer fromString(String s) {
+                    return 0;
+                }
+            });
 
             XYChart.Series series = new XYChart.Series();
 
+
+            Platform.runLater(() -> {
+                series.getData().addAll(data);
+                mainChart.getData().add(series);
+
+                ((StableTicksAxis)scene.lookup("#xAxis")).setTickLabelFormatter(new StringConverter() {
+                    @Override
+                    public String toString(Object o) {
+                        return parseResolution((int)o);
+                    }
+
+                    @Override
+                    public Integer fromString(String s) {
+                        return 0;
+                    }
+                });
+            });
+
             System.out.println(data.size());
 
-            for(int i = 0; i < data.size(); i++) {
-                series.getData().add(new XYChart.Data(i, data.get(i)));
-            }
+//            ((StableTicksAxis)mainChart.getXAxis()).setTickLabelFormatter(new StringConverter<Number>() {
+//                @Override
+//                public String toString(Number o) {
+//                    return parseResolution(o.intValue());
+//                }
 //
-            mainChart.getData().add(series);
+//                @Override
+//                public Number fromString(String s) {
+//                    return 0;
+//                }
+//            });
+
 
 
 
