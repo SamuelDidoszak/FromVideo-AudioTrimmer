@@ -13,15 +13,9 @@ public class AudioWaveform {
 
         runCommand = audioWaveformPath +
                 " --input-filename " + targetDirPath + audioFile.getFileName() +
-                " --output-filename " + targetDirPath + "full.png" +
-                " --background-color 121212" +
-                " --waveform-color 937ac2" +
-                " --amplitude-scale auto" +
-                " --zoom auto" +
-                " --border-color 121212" +
-                " --no-axis-labels" +
-                " --width 30000" +
-                " --height 720";
+                " --output-filename " + targetDirPath + "full.json" +
+                " --bits " + "8" +
+                " --pixels-per-second 500";
 
 
         // Sadly, starting the process via ProcessBuilder doesn't work. It only does, when arguments passed make the program print something and not work

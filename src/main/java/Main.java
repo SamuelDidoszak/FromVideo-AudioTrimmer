@@ -1,6 +1,4 @@
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -49,7 +47,7 @@ public class Main extends Application {
         AudioWaveform audioWaveform = new AudioWaveform(audioFile);
         audioWaveform.startProcess();
         guiHandler.initiateLengths(audioFile.getLength());
-        guiHandler.createImageView();
+        guiHandler.createChart();
         guiHandler.setImage();
         guiHandler.setListeners();
     }

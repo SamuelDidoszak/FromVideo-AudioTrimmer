@@ -1,4 +1,7 @@
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -6,6 +9,15 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
+import org.gillius.jfxutils.chart.StableTicksAxis;
+
+import javax.sound.sampled.Line;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Scanner;
 
 
 public class GuiHandler {
@@ -13,17 +25,20 @@ public class GuiHandler {
     private Scene scene;
 
     private VBox container;
-    private ImageView imageView;
+    private LineChart mainChart;
 
-    boolean imageCreated;
+    boolean chartCreated;
 
     public GuiHandler(Stage stage, Scene scene) {
         this.stage = stage;
         this.scene = scene;
 
+        System.out.println("bruh");
         container = (VBox) scene.lookup("#audioContainer");
-        imageView = (ImageView) scene.lookup("#mainImage");
-        container.getChildren().remove(imageView);
+        mainChart = (LineChart) scene.lookup("#mainChart");
+        mainChart.getYAxis().setTickLabelsVisible(false);
+
+        container.getChildren().remove(mainChart);
         container.requestFocus();
 
         setCustomTextField();
@@ -32,7 +47,7 @@ public class GuiHandler {
     public void setListeners() {
 //        scene.setOnScroll(scrollEvent -> rescaleImage(scrollEvent.getX(), scrollEvent.getY(), scrollEvent.getDeltaY()));
 
-        imageView.setOnMouseClicked(mouseEvent -> {
+        mainChart.setOnMouseClicked(mouseEvent -> {
             double audioLength = ((TextFieldCustom) scene.lookup("#lengthTextField")).getTimeValue();
             double length = audioLength / container.getWidth() * mouseEvent.getX();
             double start = ((TextFieldCustom) scene.lookup("#startTextField")).getTimeValue();
@@ -91,41 +106,72 @@ public class GuiHandler {
      * Initiates the imageView only one time.
      * Recreates it from FXML, because if node is added programmatically, it doesn't resize with borderpane
      */
-    public void createImageView() {
-        if(imageCreated) {
+    public void createChart() {
+        if(chartCreated) {
             return;
         }
 
-        container.getChildren().add(imageView);
-        imageCreated = true;
+        container.getChildren().add(mainChart);
+        chartCreated = true;
     }
 
     /**
      * Sets the imageView image
      */
     public void setImage() {
-        ImageView imageView = (ImageView) scene.lookup("#mainImage");
-        String res = getClass().getResource("full.png").toString().substring(6);
-        imageView.setImage(new Image(res));
+        try {
+            LineChart mainChart = (LineChart) scene.lookup("#mainChart");
+            File dataSrc = new File(getClass().getResource("full.json").toString().substring(6));
+            Scanner scanner = new Scanner(dataSrc);
+            String dataString = scanner.next();
+            dataString = dataString.substring(dataString.indexOf(":[") + 2, dataString.length() -2);
+            ArrayList<Integer> data = new ArrayList<>();
+            for(String val : dataString.split(",")) {
+                data.add(Integer.valueOf(val));
+            }
+
+            XYChart.Series series = new XYChart.Series();
+
+            System.out.println(data.size());
+
+            for(int i = 0; i < data.size(); i++) {
+                series.getData().add(new XYChart.Data(i, data.get(i)));
+            }
+//
+            mainChart.getData().add(series);
+
+
+
+
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+
+//        XYChart.Series series = new XYChart.Series();
+//        series.getData().addAll()
     }
 
     public void rescaleImage(double x, double y, double delta) {
-        if(!imageCreated) {
+        if(!chartCreated) {
             return;
         }
-        Double currentScale = imageView.getScaleX();
+        Double currentScale = mainChart.getScaleX();
 
         if(delta >= 0) {
             if (currentScale >= 50)
                 return;
-            imageView.setScaleX(currentScale + (currentScale * 0.1));
+            mainChart.setScaleX(currentScale + (currentScale * 0.1));
         }
         else {
             if (currentScale <= 1) {
-                imageView.setScaleX(1);
+                mainChart.setScaleX(1);
                 return;
             }
-            imageView.setScaleX(currentScale - (currentScale * 0.1));
+            mainChart.setScaleX(currentScale - (currentScale * 0.1));
         }
     }
 

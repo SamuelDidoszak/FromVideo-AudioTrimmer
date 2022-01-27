@@ -15,6 +15,7 @@
                 <includes>
                     <include>window.fxml</include>
                     <include>style.css</include>
+                    <include>full.json</include>
                 </includes>
             </resource>
             <resource>
@@ -32,6 +33,11 @@
             <groupId>com.jfoenix</groupId>
             <artifactId>jfoenix</artifactId>
             <version>9.0.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.gillius</groupId>
+            <artifactId>jfxutils</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
