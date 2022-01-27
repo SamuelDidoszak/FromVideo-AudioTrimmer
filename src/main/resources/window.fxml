@@ -11,12 +11,12 @@
         <VBox styleClass="audio-container" fx:id="audioContainer" prefHeight="${container.height * 2/3}" maxHeight="${container.height * 2/3}">
             <Label styleClass="info-label" fx:id="infoLabel" prefWidth="${container.width}" prefHeight="${audioContainer.height * 0.9}">Drag And Drop</Label>
 <!--            <ImageView styleClass="audio-box" fx:id="mainImage" fitWidth="${container.width}" fitHeight="${audioContainer.height * 0.9}"/>-->
-            <LineChart styleClass="line-chart" fx:id="mainChart">
+            <LineChart styleClass="line-chart" fx:id="mainChart" animated="false">
                 <xAxis>
-                    <NumberAxis fx:id="xAxis" animated="true" side="BOTTOM"/>
+                    <NumberAxis fx:id="xAxis" animated="false" side="BOTTOM"/>
                 </xAxis>
                 <yAxis>
-                    <NumberAxis side="LEFT"/>
+                    <NumberAxis side="LEFT" animated="false"/>
                 </yAxis>
             </LineChart>
         </VBox>

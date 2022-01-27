@@ -47,30 +47,39 @@ public class GuiHandler {
 
         mainChart.setOnMouseClicked(mouseEvent -> {
             double audioLength = ((TextFieldCustom) scene.lookup("#lengthTextField")).getTimeValue();
-            double length = audioLength / container.getWidth() * mouseEvent.getX();
+            double length = audioLength / mainChart.getWidth() * mouseEvent.getX();
             double start = ((TextFieldCustom) scene.lookup("#startTextField")).getTimeValue();
             double end = ((TextFieldCustom) scene.lookup("#endTextField")).getTimeValue();
 
-            if(mouseEvent.getButton() == MouseButton.PRIMARY)
-                if(length > end) {
+            if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+                if (length > end) {
                     setEndValue(length);
                     setStartValue(end);
                     start = end;
                     end = length;
+                    ((XYChart.Series)mainChart.getData().get(2)).getData().set(0, new XYChart.Data((double)mainChart.getXAxis().getValueForDisplay(mouseEvent.getX()) - mainChart.getXAxis().getLayoutX() / 2, -100));
+                    ((XYChart.Series)mainChart.getData().get(2)).getData().set(1, new XYChart.Data((double)mainChart.getXAxis().getValueForDisplay(mouseEvent.getX()) - mainChart.getXAxis().getLayoutX() / 2, 100));
                 } else {
                     setStartValue(length);
                     start = length;
                 }
+                ((XYChart.Series)mainChart.getData().get(1)).getData().set(0, new XYChart.Data((double)mainChart.getXAxis().getValueForDisplay(mouseEvent.getX()) - mainChart.getXAxis().getLayoutX() / 2, -100));
+                ((XYChart.Series)mainChart.getData().get(1)).getData().set(1, new XYChart.Data((double)mainChart.getXAxis().getValueForDisplay(mouseEvent.getX()) - mainChart.getXAxis().getLayoutX() / 2, 100));
+            }
             else if (mouseEvent.getButton() == MouseButton.SECONDARY) {
                 if(length < start) {
                     setStartValue(length);
                     setEndValue(start);
                     end = start;
                     start = length;
+                    ((XYChart.Series)mainChart.getData().get(1)).getData().set(0, new XYChart.Data((double)mainChart.getXAxis().getValueForDisplay(mouseEvent.getX()) - mainChart.getXAxis().getLayoutX() / 2, -100));
+                    ((XYChart.Series)mainChart.getData().get(1)).getData().set(1, new XYChart.Data((double)mainChart.getXAxis().getValueForDisplay(mouseEvent.getX()) - mainChart.getXAxis().getLayoutX() / 2, 100));
                 } else {
                     setEndValue(length);
                     end = length;
                 }
+                ((XYChart.Series)mainChart.getData().get(2)).getData().set(0, new XYChart.Data((double)mainChart.getXAxis().getValueForDisplay(mouseEvent.getX()) - mainChart.getXAxis().getLayoutX() / 2, -100));
+                ((XYChart.Series)mainChart.getData().get(2)).getData().set(1, new XYChart.Data((double)mainChart.getXAxis().getValueForDisplay(mouseEvent.getX()) - mainChart.getXAxis().getLayoutX() / 2, 100));
             }
             setlengthValue(end - start);
         });
@@ -150,11 +159,22 @@ public class GuiHandler {
             xAxis.setUpperBound(data.size());
             xAxis.setTickUnit(data.size() / 20);
 
+            // add positional markers
+            XYChart.Series line = new XYChart.Series();
+            line.getData().add(new XYChart.Data(0, -100));
+            line.getData().add(new XYChart.Data(0, 100));
+
+            XYChart.Series line2 = new XYChart.Series();
+            line2.getData().add(new XYChart.Data(data.size(), -100));
+            line2.getData().add(new XYChart.Data(data.size(), 100));
+
             Platform.runLater(() -> {
                 XYChart.Series series = new XYChart.Series();
                 series.getData().addAll(data);
                 // deletes previous data and sets new
                 mainChart.getData().setAll(series);
+                mainChart.getData().add(line);
+                mainChart.getData().add(line2);
             });
 
 
@@ -213,6 +233,11 @@ public class GuiHandler {
         startTextField.setText(time);
 
         ((TextFieldCustom) scene.lookup("#startTextField")).setTimeValue(length);
+
+        System.out.println(length);
+        System.out.println(length * 200);
+//        ((XYChart.Series)mainChart.getData().get(1)).getData().set(0, new XYChart.Data(length * 200, -100));
+//        ((XYChart.Series)mainChart.getData().get(1)).getData().set(1, new XYChart.Data(length * 200, 100));
     }
 
     /**
@@ -226,6 +251,9 @@ public class GuiHandler {
         endTextField.setText(time);
 
         ((TextFieldCustom) scene.lookup("#endTextField")).setTimeValue(length);
+
+        ((XYChart.Series)mainChart.getData().get(2)).getData().set(0, new XYChart.Data(length * 200, -100));
+        ((XYChart.Series)mainChart.getData().get(2)).getData().set(1, new XYChart.Data(length * 200, 100));
     }
 
 
