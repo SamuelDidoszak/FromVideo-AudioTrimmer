@@ -1,6 +1,8 @@
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
@@ -106,14 +108,8 @@ public class GuiHandler {
         if(chartCreated) {
             return;
         }
-
         container.getChildren().add(mainChart);
         chartCreated = true;
-    }
-
-    public String parseResolution(int i) {
-        int seconds = i / 200;
-        return String.valueOf(seconds / 60) + String.valueOf(seconds % 60);
     }
 
     /**
@@ -133,10 +129,14 @@ public class GuiHandler {
                 i++;
             }
 
-            ((StableTicksAxis)scene.lookup("#xAxis")).setTickLabelFormatter(new StringConverter() {
+            NumberAxis xAxis = ((NumberAxis)scene.lookup("#xAxis"));
+
+            xAxis.setTickLabelFormatter(new StringConverter() {
                 @Override
                 public String toString(Object o) {
-                    return parseResolution((int)o);
+                    Integer length = ((Double) o).intValue() / 200;
+                    int seconds = length % 60;
+                    return (length / 60) + ":" + (seconds > 9 ? seconds : "0" + seconds);
                 }
 
                 @Override
@@ -145,54 +145,23 @@ public class GuiHandler {
                 }
             });
 
-            XYChart.Series series = new XYChart.Series();
-
+            // Deletes the empty space on the right
+            xAxis.setAutoRanging(false);
+            xAxis.setUpperBound(data.size());
+            xAxis.setTickUnit(data.size() / 20);
 
             Platform.runLater(() -> {
+                XYChart.Series series = new XYChart.Series();
                 series.getData().addAll(data);
-                mainChart.getData().add(series);
-
-                ((StableTicksAxis)scene.lookup("#xAxis")).setTickLabelFormatter(new StringConverter() {
-                    @Override
-                    public String toString(Object o) {
-                        return parseResolution((int)o);
-                    }
-
-                    @Override
-                    public Integer fromString(String s) {
-                        return 0;
-                    }
-                });
+                // deletes previous data and sets new
+                mainChart.getData().setAll(series);
             });
-
-            System.out.println(data.size());
-
-//            ((StableTicksAxis)mainChart.getXAxis()).setTickLabelFormatter(new StringConverter<Number>() {
-//                @Override
-//                public String toString(Number o) {
-//                    return parseResolution(o.intValue());
-//                }
-//
-//                @Override
-//                public Number fromString(String s) {
-//                    return 0;
-//                }
-//            });
-
-
-
-
 
 
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
-
-//        XYChart.Series series = new XYChart.Series();
-//        series.getData().addAll()
     }
 
     public void rescaleImage(double x, double y, double delta) {

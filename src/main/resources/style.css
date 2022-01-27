@@ -68,6 +68,9 @@
 .default-color0.chart-series-line {
     -fx-stroke: #937ac2;
 }
+.default-color1.chart-series-line {
+    -fx-stroke: #937ac2;
+}
 .chart-vertical-grid-lines {
     -fx-stroke: transparent;
 }

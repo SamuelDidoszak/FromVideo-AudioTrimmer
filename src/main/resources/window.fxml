@@ -13,7 +13,7 @@
 <!--            <ImageView styleClass="audio-box" fx:id="mainImage" fitWidth="${container.width}" fitHeight="${audioContainer.height * 0.9}"/>-->
             <LineChart styleClass="line-chart" fx:id="mainChart">
                 <xAxis>
-                    <StableTicksAxis fx:id="xAxis" animated="true" side="BOTTOM"/>
+                    <NumberAxis fx:id="xAxis" animated="true" side="BOTTOM"/>
                 </xAxis>
                 <yAxis>
                     <NumberAxis side="LEFT"/>
