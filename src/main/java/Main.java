@@ -22,12 +22,12 @@ public class Main extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
-        guiHandler = new GuiHandler(primaryStage, scene);
+        guiHandler = new GuiHandler(scene);
 
 
         Controller controller = loader.getController();
         controller.getFilePath().addListener((observableValue, s, t1) -> {
-            fileRecievedHandler(observableValue.getValue());
+            fileReceivedHandler(observableValue.getValue());
         });
 
         controller.getSaveFile().addListener((observableValue, aBoolean, t1) -> {
@@ -39,16 +39,19 @@ public class Main extends Application {
 
     }
 
-    public void fileRecievedHandler(String string) {
-        Path filePath = Paths.get(string);
+    /**
+     * Sets up the program to handle file dropped by the user
+     * @param audioPath path of the audioFile
+     */
+    public void fileReceivedHandler(String audioPath) {
+        Path filePath = Paths.get(audioPath);
         audioFile = new AudioFile(filePath);
         audioFile.copyToDirectory();
 
         AudioWaveform audioWaveform = new AudioWaveform(audioFile);
         audioWaveform.startProcess();
         guiHandler.initiateLengths(audioFile.getLength());
-        guiHandler.createChart();
-        guiHandler.setChartValues();
+        guiHandler.setChart();
         guiHandler.setListeners();
     }
 
