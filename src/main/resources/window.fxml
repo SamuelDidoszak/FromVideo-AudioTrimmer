@@ -4,13 +4,13 @@
 <?import javafx.scene.chart.LineChart?>
 <?import org.gillius.jfxutils.chart.StableTicksAxis?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.shape.Rectangle?>
 <BorderPane styleClass="container" stylesheets="@style.css" fx:id="container"
             xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Controller" onDragOver="#handleDragOver" onDragDropped="#handleDragDrop">
     <top>
         <VBox styleClass="audio-container" fx:id="audioContainer" prefHeight="${container.height * 2/3}" maxHeight="${container.height * 2/3}">
             <Label styleClass="info-label" fx:id="infoLabel" prefWidth="${container.width}" prefHeight="${audioContainer.height * 0.9}">Drag And Drop</Label>
-<!--            <ImageView styleClass="audio-box" fx:id="mainImage" fitWidth="${container.width}" fitHeight="${audioContainer.height * 0.9}"/>-->
             <LineChart styleClass="line-chart" fx:id="mainChart" animated="false">
                 <xAxis>
                     <NumberAxis fx:id="xAxis" animated="false" side="BOTTOM"/>

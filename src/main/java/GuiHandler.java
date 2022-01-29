@@ -1,3 +1,4 @@
+import CustomClasses.TextFieldCustom;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.TextField;
@@ -30,43 +31,55 @@ public class GuiHandler {
      * Sets up the listeners for user input
      */
     public void setListeners() {
-//        scene.setOnScroll(scrollEvent -> rescaleImage(scrollEvent.getX(), scrollEvent.getY(), scrollEvent.getDeltaY()));
+        mainChart.setUpZoomAndPan(container);
 
         mainChart.getChart().setOnMouseClicked(mouseEvent -> {
-            if(mouseEvent.getX() < 27 || mouseEvent.getX() >= mainChart.getChart().getXAxis().getLayoutBounds().getWidth())
+            if(mainChart.wasDragged())
+                return;
+
+            if(mouseEvent.getX() < 27 || mouseEvent.getX() >= mainChart.getChart().getXAxis().getLayoutBounds().getWidth() + 27)
                 return;
 
             double audioLength = ((TextFieldCustom) scene.lookup("#lengthTextField")).getTimeValue();
-            double length = audioLength / mainChart.getChart().getXAxis().getLayoutBounds().getWidth() * (mouseEvent.getX() - 26);
+
+            // This way of determining length is 0,002265% inaccurate, which adds an additional second every 7:22 minutes
+            double lengthFromChart = mainChart.getxAxis().getLowerBound() +
+                    ((mainChart.getxAxis().getUpperBound() - mainChart.getxAxis().getLowerBound()) /
+                            mainChart.getChart().getXAxis().getLayoutBounds().getWidth() * (mouseEvent.getX() - 26));
+            // Cast the slightly inaccurate length onto actual length
+            double length = (lengthFromChart / mainChart.dataSize) * audioLength;
             double start = ((TextFieldCustom) scene.lookup("#startTextField")).getTimeValue();
             double end = ((TextFieldCustom) scene.lookup("#endTextField")).getTimeValue();
+
+            System.out.println(audioLength + "\t" + length + "\t|\t" + audioLength * 200 + "\t" + mainChart.dataSize);
 
             if(mouseEvent.getButton() == MouseButton.PRIMARY) {
                 if (length > end) {
                     setEndValue(length);
-                    mainChart.setRightLine(length);
+                    mainChart.setRightLine(lengthFromChart);
                     setStartValue(end);
-                    mainChart.setLeftLine(end);
+                    // Cast the actual length onto slightly inaccurate chart data length
+                    mainChart.setLeftLine((end * mainChart.dataSize) / audioLength);
                     start = end;
                     end = length;
-                    mainChart.setRightLine(length);
                 } else {
                     setStartValue(length);
-                    mainChart.setLeftLine(length);
+                    mainChart.setLeftLine(lengthFromChart);
                     start = length;
                 }
             }
             else if (mouseEvent.getButton() == MouseButton.SECONDARY) {
                 if(length < start) {
                     setStartValue(length);
-                    mainChart.setLeftLine(length);
+                    mainChart.setLeftLine(lengthFromChart);
                     setEndValue(start);
-                    mainChart.setRightLine(start);
+                    // Cast the actual length onto slightly inaccurate chart data length
+                    mainChart.setRightLine((start * mainChart.dataSize) / audioLength);
                     end = start;
                     start = length;
                 } else {
                     setEndValue(length);
-                    mainChart.setRightLine(length);
+                    mainChart.setRightLine(lengthFromChart);
                     end = length;
                 }
             }
@@ -109,26 +122,6 @@ public class GuiHandler {
         }
         mainChart.setChartValues();
     }
-
-//    public void rescaleImage(double x, double y, double delta) {
-//        if(!chartCreated) {
-//            return;
-//        }
-//        Double currentScale = mainChart.getScaleX();
-//
-//        if(delta >= 0) {
-//            if (currentScale >= 50)
-//                return;
-//            mainChart.setScaleX(currentScale + (currentScale * 0.1));
-//        }
-//        else {
-//            if (currentScale <= 1) {
-//                mainChart.setScaleX(1);
-//                return;
-//            }
-//            mainChart.setScaleX(currentScale - (currentScale * 0.1));
-//        }
-//    }
 
     /**
      * Initiates the length of lengthTextField and endTextField

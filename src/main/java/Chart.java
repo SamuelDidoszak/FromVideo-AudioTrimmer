@@ -1,9 +1,15 @@
+import CustomClasses.ChartPanManagerCustom;
+import CustomClasses.ChartZoomManagerCustom;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.util.StringConverter;
+import org.gillius.jfxutils.chart.AxisConstraint;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,6 +23,12 @@ public class Chart {
     private ObservableList leftPointer;
     private ObservableList rightPointer;
     private ObservableList chartData;
+
+    private ChartZoomManagerCustom zoomManager;
+    private ChartPanManagerCustom panManager;
+
+    // debugging purposes
+    public int dataSize;
 
     public Chart(LineChart chart) {
         this.chart = chart;
@@ -38,6 +50,37 @@ public class Chart {
         });
     }
 
+    public void setUpZoomAndPan(Pane container) {
+        if (zoomManager != null || panManager != null) {
+            zoomManager.stop();
+            panManager.stop();
+        }
+        zoomManager = new ChartZoomManagerCustom(container, new Rectangle(), chart);
+        zoomManager.restrictPanning(0, dataSize);
+        zoomManager.setZoomAnimated(false);
+        zoomManager.setMouseWheelAxisConstraintStrategy(chartInputContext -> AxisConstraint.Horizontal);
+        zoomManager.start();
+
+        //Panning works via either secondary (right) mouse or primary with ctrl held down
+        panManager = new ChartPanManagerCustom(chart);
+        panManager.restrictPanning(0, dataSize);
+        panManager.setMouseFilter(mouseEvent -> {
+            if(mouseEvent.getButton() == MouseButton.SECONDARY || mouseEvent.getButton() == MouseButton.PRIMARY) {
+                //let it through
+            } else {
+                mouseEvent.consume();
+            }
+        });
+        panManager.setAxisConstraintStrategy(chartInputContext -> AxisConstraint.Horizontal);
+        panManager.start();
+
+//        JFXChartUtil.addDoublePrimaryClickAutoRangeHandler(chart);
+    }
+
+    public boolean wasDragged() {
+        return panManager.wasDragged();
+    }
+
     /**
      * Sets the chart data values
      */
@@ -54,10 +97,13 @@ public class Chart {
                 i++;
             }
             System.out.println("size: " + data.size());
+            dataSize = data.size() - 1;
+
 
             // Deletes the empty space on the right
             xAxis.setAutoRanging(false);
             xAxis.setUpperBound(data.size());
+            xAxis.setLowerBound(0);
             xAxis.setTickUnit(data.size() / 20);
 
             // add positional markers
@@ -87,19 +133,23 @@ public class Chart {
 
     public void setLeftLine(double seconds) {
         Platform.runLater(() -> {
-            leftPointer.set(0, new XYChart.Data(seconds * 200, -100));
-            leftPointer.set(1, new XYChart.Data(seconds * 200, 100));
+            leftPointer.set(0, new XYChart.Data(seconds, -100));
+            leftPointer.set(1, new XYChart.Data(seconds, 100));
         });
     }
 
     public void setRightLine(double seconds) {
         Platform.runLater(() -> {
-            rightPointer.set(0, new XYChart.Data(seconds * 200, -100));
-            rightPointer.set(1, new XYChart.Data(seconds * 200, 100));
+            rightPointer.set(0, new XYChart.Data(seconds, -100));
+            rightPointer.set(1, new XYChart.Data(seconds, 100));
         });
     }
 
     public LineChart getChart() {
         return chart;
+    }
+
+    public NumberAxis getxAxis() {
+        return xAxis;
     }
 }
