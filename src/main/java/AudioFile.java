@@ -1,17 +1,31 @@
-import javax.sound.sampled.*;
+import javafx.scene.media.Media;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.nio.file.*;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class AudioFile {
     private String fileName;
     private Path path;
     /**file length in seconds*/
     private float length;
+    private Media audioFile;
 
-    public AudioFile(String fileName) {
-        this.fileName = fileName;
+    private String tempPath;
+
+    public String getTempPath() {
+        return tempPath;
+    }
+
+    public Media getAudioFile() {
+        return audioFile;
     }
 
     public AudioFile(Path path) {
@@ -43,6 +57,11 @@ public class AudioFile {
             else
                 e.printStackTrace();
         }
+        tempPath = outputPath.toString();
+
+//        System.out.println(outputPath);
+//        audioFile = new Media(new File(outputPath.toString()).toURI().toString());
+//        System.out.println("????????");
     }
 
     /**

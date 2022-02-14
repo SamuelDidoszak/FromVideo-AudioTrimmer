@@ -2,9 +2,12 @@ import CustomClasses.TextFieldCustom;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -45,6 +48,7 @@ public class Main extends Application {
      * @param audioPath path of the audioFile
      */
     public void fileReceivedHandler(String audioPath) {
+        System.out.println("oh god");
         Path filePath = Paths.get(audioPath);
         audioFile = new AudioFile(filePath);
         audioFile.copyToDirectory();
@@ -54,6 +58,11 @@ public class Main extends Application {
         guiHandler.initiateLengths(audioFile.getLength());
         guiHandler.setChart();
         guiHandler.setListeners();
+
+        System.out.println(audioFile.getTempPath());
+        MediaPlayer player = new MediaPlayer(new Media(new File(audioFile.getTempPath()).toURI().toString()));
+        System.out.println("bruh?");
+        player.play();
     }
 
 

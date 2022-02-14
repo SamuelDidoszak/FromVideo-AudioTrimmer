@@ -10,7 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/audiowaveform" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="16" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="javafx-fxml">
@@ -29,6 +29,12 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="JavaFX" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-media:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-media:win:17.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:17.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:17.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:17.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:17.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.jfoenix:jfoenix:9.0.10" level="project" />
     <orderEntry type="library" name="Maven: org.gillius:jfxutils:1.0" level="project" />
   </component>
