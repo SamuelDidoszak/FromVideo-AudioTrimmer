@@ -1,6 +1,8 @@
 package org.didoszak.audiocutter;
 
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -8,7 +10,10 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class AudioFile {
     private String fileName;
@@ -16,15 +21,12 @@ public class AudioFile {
     /**file length in seconds*/
     private float length;
     private Media audioFile;
+    private MediaPlayer player;
 
     private String tempPath;
 
     public String getTempPath() {
         return tempPath;
-    }
-
-    public Media getAudioFile() {
-        return audioFile;
     }
 
     public AudioFile(Path path) {
@@ -56,8 +58,8 @@ public class AudioFile {
         }
         tempPath = outputPath.toString();
 
-//        System.out.println(outputPath);
-//        audioFile = new Media(new File(outputPath.toString()).toURI().toString());
+        audioFile = new Media(new File(outputPath.toString()).toURI().toString());
+        player = new MediaPlayer(audioFile);
     }
 
     /**
@@ -96,6 +98,48 @@ public class AudioFile {
                 trimmedInputStream.close();
             } catch (Exception e) {
                 System.out.println(e);
+            }
+        }
+    }
+
+    /**
+     * Plays audio with a custom duration. Option to pause can be enabled inside
+     * @param start start position in seconds
+     * @param end end position in seconds
+     */
+    public void playAudio(double start, double end) {
+        boolean enablePause = false;
+
+        if(!enablePause) {
+            if(player.getStatus() == MediaPlayer.Status.PLAYING && (int) player.getCurrentTime().toMillis() != (int) player.getStopTime().toMillis())
+                player.stop();
+            else {
+                player.seek(new Duration(start * 1000));
+                player.setStartTime(new Duration(start * 1000));
+                player.setStopTime(new Duration(end * 1000));
+                player.play();
+            }
+        } else {
+            switch (player.getStatus()) {
+                case READY:
+                    player.setStartTime(new Duration(start * 1000));
+                    player.setStopTime(new Duration(end * 1000));
+                    player.play();
+                    break;
+                case PLAYING:
+                    System.out.println((int) player.getCurrentTime().toMillis() + "\t\t" + (int) player.getStopTime().toMillis());
+                    if ((int) player.getCurrentTime().toMillis() != (int) player.getStopTime().toMillis()) {
+                        player.pause();
+                    } else {
+                        player.seek(new Duration(start * 1000));
+                        player.setStartTime(new Duration(start * 1000));
+                        player.setStopTime(new Duration(end * 1000));
+                        player.play();
+                    }
+                    break;
+                case PAUSED:
+                    player.play();
+                    break;
             }
         }
     }

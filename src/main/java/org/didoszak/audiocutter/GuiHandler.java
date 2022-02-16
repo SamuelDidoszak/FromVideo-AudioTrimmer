@@ -182,4 +182,14 @@ public class GuiHandler {
 
         textField.setText(time);
     }
+
+    public double getStartValue() {
+        return ((TextFieldCustom) scene.lookup("#startTextField")).getTimeValue();
+    }
+
+    public double getEndValue() {
+        return ((TextFieldCustom) scene.lookup("#endTextField")).getTimeValue();
+    }
 }
+
+

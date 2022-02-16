@@ -1,15 +1,13 @@
 package org.didoszak.audiocutter;
 
-import org.didoszak.audiocutter.CustomClasses.TextFieldCustom;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import org.didoszak.audiocutter.CustomClasses.TextFieldCustom;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -30,10 +28,14 @@ public class Main extends Application {
         primaryStage.show();
         guiHandler = new GuiHandler(scene);
 
-
         Controller controller = loader.getController();
         controller.getFilePath().addListener((observableValue, s, t1) -> {
             fileReceivedHandler(observableValue.getValue());
+            scene.setOnKeyPressed(keyEvent -> {
+                if(keyEvent.getCode() == KeyCode.SPACE) {
+                    audioFile.playAudio(guiHandler.getStartValue(), guiHandler.getEndValue());
+                }
+            });
         });
 
         controller.getSaveFile().addListener((observableValue, aBoolean, t1) -> {
@@ -60,10 +62,6 @@ public class Main extends Application {
         guiHandler.initiateLengths(audioFile.getLength());
         guiHandler.setChart();
         guiHandler.setListeners();
-
-        MediaPlayer player = new MediaPlayer(new Media(new File(audioFile.getTempPath()).toURI().toString()));
-        System.out.println("playing audio");
-        player.play();
     }
 
 
