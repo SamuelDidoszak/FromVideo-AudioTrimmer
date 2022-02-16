@@ -5,15 +5,19 @@ import java.io.*;
 public class Ffmpeg {
     private String path = new File("ffmpeg/ffmpeg.exe").getAbsolutePath();
 
-    public String convertMp4ToWav(String videoPath) {
+    public String convertToWav(String path) {
         System.out.println("converting");
-        String outputPath = new File("resources").getAbsolutePath() + "\\" + videoPath.substring(videoPath.lastIndexOf("\\"), videoPath.length() - 4) + ".wav";
+        String outputPath = new File("resources").getAbsolutePath() + "\\" + path.substring(path.lastIndexOf("\\"), path.length() - 4) + ".wav";
         System.out.println(outputPath);
-        String runCommand = path +
-                " -i " + videoPath +
-                " -f wav -bitexact -acodec pcm_s16le -ar 22050 -ac 1 " +
-                outputPath;
+        String runCommand = this.path +
+                " -i \"" + path +
+                "\" -f wav -bitexact -acodec pcm_s16le -ar 22050 -ac 1 " +
+                "\"" + outputPath + "\"";
 
+        return executeCommand(runCommand) ? outputPath : "";
+    }
+
+    private boolean executeCommand(String runCommand) {
         try {
             long t1 = System.currentTimeMillis();
             Process process = Runtime.getRuntime().exec(runCommand);
@@ -30,10 +34,24 @@ public class Ffmpeg {
                 long t2 = System.currentTimeMillis();
                 System.out.println("execution time: " + (t2 - t1));
             }
-            return outputPath;
+            return true;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            return "";
+            return false;
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

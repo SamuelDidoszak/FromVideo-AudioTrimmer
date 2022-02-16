@@ -122,7 +122,7 @@ public class AudioFile {
         }
 
         if(!enablePause) {
-            if(player.getStatus() == MediaPlayer.Status.PLAYING && (int) player.getCurrentTime().toMillis() != (int) player.getStopTime().toMillis())
+            if(player.getStatus() == MediaPlayer.Status.PLAYING && (int) Math.ceil(player.getCurrentTime().toMillis()) < (int) Math.ceil(player.getStopTime().toMillis()) - 5)
                 player.stop();
             else {
                 player.seek(new Duration(start * 1000));

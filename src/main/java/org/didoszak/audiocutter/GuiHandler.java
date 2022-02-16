@@ -114,7 +114,7 @@ public class GuiHandler {
     }
 
     /**
-     * Initiates the imageView only one time.
+     * Initiates the Chart only one time.
      * Recreates it from FXML, because if node is added programmatically, it doesn't resize with borderpane
      */
     public void setChart() {

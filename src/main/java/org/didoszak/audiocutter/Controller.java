@@ -52,11 +52,16 @@ public class Controller {
         String fileExtension = path.toString().substring(path.toString().lastIndexOf("."));
         switch(fileExtension) {
             case ".wav":
-//            case ".mp3":
-//            case ".flac":
-//            case ".ogg":
-//            case ".opus":
+            case ".mp3":
+            case ".flac":
+            case ".ogg":
+            case ".opus":
+            case ".aac":
+            case ".aiff":
+            case ".m4a":
             case ".mp4":
+            case ".mov":
+            case ".webm":
                 if(firstFile) {
                     audioContainer.getChildren().remove(infoLabel);
                     firstFile = false;

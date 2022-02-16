@@ -71,8 +71,28 @@ public class Main extends Application {
 
     private String convertToWav(String audioPath) {
         String extension = audioPath.substring(audioPath.lastIndexOf("."));
-        if(extension.equals(".mp4"))
-            return new Ffmpeg().convertMp4ToWav(audioPath);
+        if(!extension.equals(".wav")) {
+            // removes empty spaces and puts next chars to uppercase. Probably won't be needed
+//            char[] tempString = new char[audioPath.length()];
+//            audioPath.getChars(0, audioPath.length(), tempString, 0);
+//            for(int i = tempString.length - 2; i > 0; i++) {
+//                if(tempString[i] == ' ')
+//                    tempString[i + 1] = Character.toUpperCase(tempString[i + 1]);
+//            }
+//            audioPath = new String(tempString).replaceAll(" ", "");
+//            System.out.println(audioPath);
+
+            return new Ffmpeg().convertToWav(audioPath);
+        }
+//        switch (extension) {
+//            case ".mp4":
+//                return new Ffmpeg().convertMp4(audioPath);
+//            case ".mp3":
+//                return new Ffmpeg().convertMp3(audioPath);
+//            case ".flac":
+//                return new Ffmpeg().convertFlac(audioPath);
+//        }
+
 
         return audioPath;
     }
