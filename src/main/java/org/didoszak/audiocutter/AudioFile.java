@@ -24,16 +24,9 @@ public class AudioFile {
     private Media audioFile;
     private MediaPlayer player;
 
-    private boolean created;
-
-    public Path getCurrentPath() {
-        return currentPath;
-    }
-
     public AudioFile(Path path) {
         this.path = path;
         this.fileName = path.getFileName().toString();
-        created = false;
         AudioInputStream audioInputStream = null;
         try {
             audioInputStream = AudioSystem.getAudioInputStream(path.toFile());
@@ -55,7 +48,7 @@ public class AudioFile {
      * Copies the provided file to /target directory
      */
     public void copyToDirectory() {
-        Path outputPath = Paths.get(new File("resources").getAbsolutePath() + "/" + fileName);
+        Path outputPath = Paths.get(new File("resources").getAbsolutePath() + "\\" + fileName);
         try {
             Files.copy(path, outputPath);
         } catch (IOException e) {
@@ -115,10 +108,9 @@ public class AudioFile {
     public void playAudio(double start, double end) {
         boolean enablePause = false;
 
-        if(!created) {
+        if(player == null) {
             audioFile = new Media(new File(currentPath.toString()).toURI().toString());
             player = new MediaPlayer(audioFile);
-            created = true;
         }
 
         if(!enablePause) {
@@ -153,6 +145,13 @@ public class AudioFile {
                     break;
             }
         }
+    }
+
+    public void removeFile() {
+        // Has to force garbage collection
+        System.gc();
+        File currentFile = new File(currentPath.toString());
+        currentFile.delete();
     }
 
     public String getFileName() {

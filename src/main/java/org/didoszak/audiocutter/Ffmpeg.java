@@ -3,11 +3,12 @@ package org.didoszak.audiocutter;
 import java.io.*;
 
 public class Ffmpeg {
-    private String path = new File("ffmpeg/ffmpeg.exe").getAbsolutePath();
+    private String path = new File("ffmpeg\\ffmpeg.exe").getAbsolutePath();
 
     public String convertToWav(String path) {
         System.out.println("converting");
-        String outputPath = new File("resources").getAbsolutePath() + "\\" + path.substring(path.lastIndexOf("\\"), path.length() - 4) + ".wav";
+        String outputPath = new File("resources").getAbsolutePath() + path.substring(path.lastIndexOf("\\"), path.lastIndexOf(".")) + ".wav";
+//        String outputPath = new File("resources").getAbsolutePath() + "\\" + Paths.get(path).getFileName().toString().substring(0, Paths.get(path).getFileName().toString().lastIndexOf(".")) + ".wav";
         System.out.println(outputPath);
         String runCommand = this.path +
                 " -i \"" + path +
@@ -34,6 +35,7 @@ public class Ffmpeg {
                 long t2 = System.currentTimeMillis();
                 System.out.println("execution time: " + (t2 - t1));
             }
+            process.destroy();
             return true;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

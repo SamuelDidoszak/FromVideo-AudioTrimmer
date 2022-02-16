@@ -53,6 +53,10 @@ public class Main extends Application {
      * @param audioPath path of the audioFile
      */
     public void fileReceivedHandler(String audioPath) {
+        System.out.println(audioFile);
+        if(audioFile != null)
+            audioFile.removeFile();
+
         Path filePath = Paths.get(audioPath);
         // convert to .wav or copy file
         Path convertedPath = Paths.get(convertToWav(audioPath));
@@ -71,32 +75,17 @@ public class Main extends Application {
 
     private String convertToWav(String audioPath) {
         String extension = audioPath.substring(audioPath.lastIndexOf("."));
-        if(!extension.equals(".wav")) {
-            // removes empty spaces and puts next chars to uppercase. Probably won't be needed
-//            char[] tempString = new char[audioPath.length()];
-//            audioPath.getChars(0, audioPath.length(), tempString, 0);
-//            for(int i = tempString.length - 2; i > 0; i++) {
-//                if(tempString[i] == ' ')
-//                    tempString[i + 1] = Character.toUpperCase(tempString[i + 1]);
-//            }
-//            audioPath = new String(tempString).replaceAll(" ", "");
-//            System.out.println(audioPath);
-
+        if(!extension.equals(".wav"))
             return new Ffmpeg().convertToWav(audioPath);
-        }
-//        switch (extension) {
-//            case ".mp4":
-//                return new Ffmpeg().convertMp4(audioPath);
-//            case ".mp3":
-//                return new Ffmpeg().convertMp3(audioPath);
-//            case ".flac":
-//                return new Ffmpeg().convertFlac(audioPath);
-//        }
-
-
         return audioPath;
     }
 
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        if(audioFile != null)
+            audioFile.removeFile();
+    }
 
     public static void main(String[] args) {
         launch(args);
