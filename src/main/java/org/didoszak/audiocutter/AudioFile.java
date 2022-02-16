@@ -18,20 +18,22 @@ import java.nio.file.Paths;
 public class AudioFile {
     private String fileName;
     private Path path;
+    private Path currentPath;
     /**file length in seconds*/
     private float length;
     private Media audioFile;
     private MediaPlayer player;
 
-    private String tempPath;
+    private boolean created;
 
-    public String getTempPath() {
-        return tempPath;
+    public Path getCurrentPath() {
+        return currentPath;
     }
 
     public AudioFile(Path path) {
         this.path = path;
         this.fileName = path.getFileName().toString();
+        created = false;
         AudioInputStream audioInputStream = null;
         try {
             audioInputStream = AudioSystem.getAudioInputStream(path.toFile());
@@ -41,6 +43,12 @@ public class AudioFile {
         AudioFormat format = audioInputStream.getFormat();
 
         length = path.toFile().length() / (format.getFrameSize() * format.getFrameRate());
+    }
+
+    public AudioFile(Path path, Path currentPath) {
+        this(currentPath);
+        this.path = path;
+        this.currentPath = currentPath;
     }
 
     /**
@@ -56,10 +64,7 @@ public class AudioFile {
             else
                 e.printStackTrace();
         }
-        tempPath = outputPath.toString();
-
-        audioFile = new Media(new File(outputPath.toString()).toURI().toString());
-        player = new MediaPlayer(audioFile);
+        currentPath = outputPath;
     }
 
     /**
@@ -71,7 +76,7 @@ public class AudioFile {
         AudioInputStream audioInputStream = null;
         AudioInputStream trimmedInputStream = null;
         try {
-            audioInputStream = AudioSystem.getAudioInputStream(path.toFile());
+            audioInputStream = AudioSystem.getAudioInputStream(currentPath.toFile());
             AudioFormat format = audioInputStream.getFormat();
 
             int bytesPerSecond = format.getFrameSize() * (int) format.getFrameRate();
@@ -85,7 +90,7 @@ public class AudioFile {
             trimmedInputStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
 
             System.out.println("file output path: " + path.getParent().toString() + "\\" + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf(".")));
-            AudioSystem.write(trimmedInputStream, AudioSystem.getAudioFileFormat(path.toFile()).getType(), new File(path.getParent().toString() + "\\" + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf("."))));
+            AudioSystem.write(trimmedInputStream, AudioSystem.getAudioFileFormat(currentPath.toFile()).getType(), new File(path.getParent().toString() + "\\" + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf("."))));
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -109,6 +114,12 @@ public class AudioFile {
      */
     public void playAudio(double start, double end) {
         boolean enablePause = false;
+
+        if(!created) {
+            audioFile = new Media(new File(currentPath.toString()).toURI().toString());
+            player = new MediaPlayer(audioFile);
+            created = true;
+        }
 
         if(!enablePause) {
             if(player.getStatus() == MediaPlayer.Status.PLAYING && (int) player.getCurrentTime().toMillis() != (int) player.getStopTime().toMillis())

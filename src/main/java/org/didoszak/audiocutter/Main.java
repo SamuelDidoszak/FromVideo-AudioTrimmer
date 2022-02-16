@@ -43,6 +43,7 @@ public class Main extends Application {
             double start = ((TextFieldCustom) scene.lookup("#startTextField")).getTimeValue();
             double end = ((TextFieldCustom) scene.lookup("#endTextField")).getTimeValue();
             audioFile.trimAudioFile(start, end);
+            (scene.lookup("#audioContainer")).requestFocus();
         });
 
     }
@@ -52,16 +53,28 @@ public class Main extends Application {
      * @param audioPath path of the audioFile
      */
     public void fileReceivedHandler(String audioPath) {
-        System.out.println("oh god");
         Path filePath = Paths.get(audioPath);
-        audioFile = new AudioFile(filePath);
-        audioFile.copyToDirectory();
+        // convert to .wav or copy file
+        Path convertedPath = Paths.get(convertToWav(audioPath));
+        if(filePath.equals(convertedPath)) {
+            audioFile = new AudioFile(filePath);
+            audioFile.copyToDirectory();
+        } else
+            audioFile = new AudioFile(filePath, convertedPath);
 
         AudioWaveform audioWaveform = new AudioWaveform(audioFile);
         audioWaveform.startProcess();
         guiHandler.initiateLengths(audioFile.getLength());
         guiHandler.setChart();
         guiHandler.setListeners();
+    }
+
+    private String convertToWav(String audioPath) {
+        String extension = audioPath.substring(audioPath.lastIndexOf("."));
+        if(extension.equals(".mp4"))
+            return new Ffmpeg().convertMp4ToWav(audioPath);
+
+        return audioPath;
     }
 
 

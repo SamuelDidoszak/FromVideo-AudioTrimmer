@@ -56,6 +56,7 @@ public class Controller {
 //            case ".flac":
 //            case ".ogg":
 //            case ".opus":
+            case ".mp4":
                 if(firstFile) {
                     audioContainer.getChildren().remove(infoLabel);
                     firstFile = false;
