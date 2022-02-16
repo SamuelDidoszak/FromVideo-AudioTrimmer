@@ -1,3 +1,5 @@
+package org.didoszak.audiocutter;
+
 import java.io.*;
 
 public class AudioWaveform {
@@ -5,8 +7,8 @@ public class AudioWaveform {
     private Process process;
 
     public AudioWaveform(AudioFile audioFile) {
-        String audioWaveformPath = getClass().getResource("audiowaveform.exe").toString().substring(6);
-        String targetDirPath = audioWaveformPath.substring(0, audioWaveformPath.lastIndexOf("/") + 1);
+        String audioWaveformPath = new File("resources/audiowaveform.exe").getAbsolutePath();
+        String targetDirPath = new File("resources").getAbsolutePath() + "/";
 
         runCommand = audioWaveformPath +
                 " --input-filename " + targetDirPath + audioFile.getFileName() +

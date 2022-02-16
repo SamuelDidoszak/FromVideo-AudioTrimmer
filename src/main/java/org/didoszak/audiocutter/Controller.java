@@ -1,3 +1,5 @@
+package org.didoszak.audiocutter;
+
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;

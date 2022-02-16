@@ -1,4 +1,4 @@
-package CustomClasses;
+package org.didoszak.audiocutter.CustomClasses;
 
 import javafx.scene.control.TextField;
 

@@ -1,3 +1,5 @@
+package org.didoszak.audiocutter;
+
 import javafx.scene.media.Media;
 
 import javax.sound.sampled.AudioFormat;
@@ -6,10 +8,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 
 public class AudioFile {
     private String fileName;
@@ -46,9 +45,7 @@ public class AudioFile {
      * Copies the provided file to /target directory
      */
     public void copyToDirectory() {
-        String outputDirectory = getClass().getResource("audiowaveform.exe").toString();
-        outputDirectory = outputDirectory.substring(0, outputDirectory.lastIndexOf("/") + 1);
-        Path outputPath = Paths.get(outputDirectory.substring(6) + fileName);
+        Path outputPath = Paths.get(new File("resources").getAbsolutePath() + "/" + fileName);
         try {
             Files.copy(path, outputPath);
         } catch (IOException e) {
@@ -61,7 +58,6 @@ public class AudioFile {
 
 //        System.out.println(outputPath);
 //        audioFile = new Media(new File(outputPath.toString()).toURI().toString());
-//        System.out.println("????????");
     }
 
     /**

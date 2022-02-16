@@ -1,4 +1,6 @@
-import CustomClasses.TextFieldCustom;
+package org.didoszak.audiocutter;
+
+import org.didoszak.audiocutter.CustomClasses.TextFieldCustom;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -59,9 +61,8 @@ public class Main extends Application {
         guiHandler.setChart();
         guiHandler.setListeners();
 
-        System.out.println(audioFile.getTempPath());
         MediaPlayer player = new MediaPlayer(new Media(new File(audioFile.getTempPath()).toURI().toString()));
-        System.out.println("bruh?");
+        System.out.println("playing audio");
         player.play();
     }
 

@@ -6,12 +6,11 @@
 
     <groupId>org.didoszak.audioCutter</groupId>
     <artifactId>AudioCutter</artifactId>
-    <version>0.8-SNAPSHOT</version>
+    <version>0.85-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
-        <javafx.version>17.0.1</javafx.version>
         <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
     </properties>
 
@@ -36,21 +35,38 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>16</source>
-                    <target>16</target>
-                </configuration>
+                <version>3.8.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <id>compile</id>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
 
 
     <dependencies>
+<!--        JavaFX dependencies -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>17.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>17.0.1</version>
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-media</artifactId>
-            <version>${javafx.version}</version>
+            <version>17.0.1</version>
         </dependency>
+<!--        Other dependencies -->
         <dependency>
             <groupId>com.jfoenix</groupId>
             <artifactId>jfoenix</artifactId>

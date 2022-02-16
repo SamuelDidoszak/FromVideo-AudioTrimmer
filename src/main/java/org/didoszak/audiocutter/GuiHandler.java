@@ -1,4 +1,6 @@
-import CustomClasses.TextFieldCustom;
+package org.didoszak.audiocutter;
+
+import org.didoszak.audiocutter.CustomClasses.TextFieldCustom;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.TextField;

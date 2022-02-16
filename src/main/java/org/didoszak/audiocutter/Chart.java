@@ -1,5 +1,7 @@
-import CustomClasses.ChartPanManagerCustom;
-import CustomClasses.ChartZoomManagerCustom;
+package org.didoszak.audiocutter;
+
+import org.didoszak.audiocutter.CustomClasses.ChartPanManagerCustom;
+import org.didoszak.audiocutter.CustomClasses.ChartZoomManagerCustom;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
@@ -86,7 +88,7 @@ public class Chart {
      */
     public void setChartValues() {
         try {
-            File dataSrc = new File(getClass().getResource("full.json").toString().substring(6));
+            File dataSrc = new File("resources/full.json");
             Scanner scanner = new Scanner(dataSrc);
             String dataString = scanner.next();
             dataString = dataString.substring(dataString.indexOf(":[") + 2, dataString.length() -2);
