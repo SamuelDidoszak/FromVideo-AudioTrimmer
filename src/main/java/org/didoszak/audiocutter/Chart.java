@@ -37,6 +37,10 @@ public class Chart {
         chart.getYAxis().setTickLabelsVisible(false);
         xAxis = (NumberAxis) chart.getXAxis();
 
+        System.out.println("current tick label length: " + xAxis.tickLabelGapProperty());
+//        xAxis.setTickLength(-20.0);
+//        xAxis.setTickLabelGap(400.0);
+
         xAxis.setTickLabelFormatter(new StringConverter() {
             @Override
             public String toString(Object o) {
@@ -76,6 +80,7 @@ public class Chart {
         panManager.setAxisConstraintStrategy(chartInputContext -> AxisConstraint.Horizontal);
         panManager.start();
 
+
 //        JFXChartUtil.addDoublePrimaryClickAutoRangeHandler(chart);
     }
 
@@ -106,7 +111,8 @@ public class Chart {
             xAxis.setAutoRanging(false);
             xAxis.setUpperBound(data.size());
             xAxis.setLowerBound(0);
-            xAxis.setTickUnit(data.size() / 20);
+            // Creates tick number dynamically depending on datapoint amount
+            xAxis.setTickUnit(data.size() / Math.pow(data.size(), 0.25));
 
             // add positional markers
             XYChart.Series line = new XYChart.Series();

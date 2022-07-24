@@ -12,6 +12,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Point2D;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ValueAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.input.MouseButton;
@@ -217,6 +218,9 @@ public class ChartZoomManagerCustom {
                     ChartZoomManagerCustom.this.xAxis.setLowerBound(tempLowerBound);
                     ChartZoomManagerCustom.this.xAxis.setUpperBound(tempUpperBound);
                 }
+
+                double dataPoints = ChartZoomManagerCustom.this.xAxis.getUpperBound() - ChartZoomManagerCustom.this.xAxis.getLowerBound();
+                ((NumberAxis)ChartZoomManagerCustom.this.xAxis).setTickUnit(dataPoints / Math.pow(dataPoints, 0.25));
             }
 
         }

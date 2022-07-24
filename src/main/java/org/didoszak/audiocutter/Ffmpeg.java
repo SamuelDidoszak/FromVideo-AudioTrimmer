@@ -8,8 +8,12 @@ public class Ffmpeg {
 
     public String convertToWav(String path) {
         System.out.println("converting");
+
+        // check if there is an ffmpeg installed
+        if(executeCommandGobble("ffmpeg -version"))
+            this.path = "ffmpeg";
+
         String outputPath = new File("resources").getAbsolutePath() + path.substring(path.lastIndexOf("\\"), path.lastIndexOf(".")) + ".wav";
-//        String outputPath = new File("resources").getAbsolutePath() + "\\" + Paths.get(path).getFileName().toString().substring(0, Paths.get(path).getFileName().toString().lastIndexOf(".")) + ".wav";
         System.out.println(outputPath);
         String runCommand = this.path +
                 " -i \"" + path +
@@ -125,10 +129,12 @@ public class Ffmpeg {
         }
 
         private void parsePrompt(String line) throws IOException {
-            System.out.println("Input needed: \n\t" + line);
-
             if(line.endsWith("Overwrite? [y/N] ")) {
+                System.out.println("Input needed: \n\t" + line);
                 writeResponse("y");
+            }
+            else if (line.startsWith("ffmpeg version")) {
+                System.out.println("ffmpeg available");
             }
 
         }

@@ -82,8 +82,20 @@ public class AudioFile {
                 framesOfAudioToCopy = audioInputStream.getFrameLength() - (long) (start * format.getFrameRate());
             trimmedInputStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
 
-            System.out.println("file output path: " + path.getParent().toString() + "\\" + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf(".")));
-            AudioSystem.write(trimmedInputStream, AudioSystem.getAudioFileFormat(currentPath.toFile()).getType(), new File(path.getParent().toString() + "\\" + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf("."))));
+            // Generate a name for the file
+
+            String outputPath = path.getParent().toString() + "\\" + fileName.substring(0, fileName.indexOf(".")) + fileName.substring(fileName.indexOf("."));
+            if((new File(outputPath)).exists())
+                outputPath = path.getParent().toString() + "\\" + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileName.substring(fileName.indexOf("."));
+
+            int fileNum = 1;
+            while((new File(outputPath).exists())) {
+                outputPath = path.getParent().toString() + "\\" + fileName.substring(0, fileName.indexOf(".")) + "Trimmed" + fileNum + fileName.substring(fileName.indexOf("."));
+                fileNum++;
+            }
+
+            System.out.println("file output path: " + outputPath);
+            AudioSystem.write(trimmedInputStream, AudioSystem.getAudioFileFormat(currentPath.toFile()).getType(), new File(outputPath));
         } catch (Exception e) {
             System.out.println(e);
         } finally {
