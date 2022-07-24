@@ -5,16 +5,6 @@
 .root{
     -fx-background-color: #121212;
 }
-.audio-box {
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center center;
-}
-.small-audio-box {
-    -fx-image: url('full.png');
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center center;
-    -fx-width: 80%;
-}
 .label {
     -fx-font-size: 16.0px;
     -fx-padding: 14.0px;
@@ -57,6 +47,45 @@
     -fx-padding: 6em;
 }
 
+/*
+* Help button
+*/
+.help-button {
+    -fx-background-color: transparent;
+    -fx-padding: 15 25 0 0;
+}
+.help-button > .arrow-button {
+    -fx-padding: 0;
+}
+.help-button > .arrow-button > .arrow {
+    -fx-padding: 0;
+}
+.help-button > * > .context-menu {
+    -fx-color: -fx-base;
+    -fx-background-color: #272727;
+    -fx-padding: 0;
+}
+.help-button > * > .context-menu:focused {
+    -fx-color: -fx-base;
+    -fx-background-color: #272727;
+    -fx-padding: 0;
+}
+.context-menu {
+    -fx-padding: 0;
+}
+.context-menu:focused {
+     -fx-background-color: red;
+}
+
+.help-button > * > .context-menu > .menu-item {
+     -fx-background: red;
+     -fx-background-color: red;
+     -fx-text-fill: -fx-selection-bar-text;
+}
+
+/*
+* Line chart
+*/
 .line-chart {
     -fx-background-color: transparent;
     -fx-legend-visible: false;
@@ -84,7 +113,9 @@
     -fx-stroke: #4C19A8;
 }
 
-
+/*
+* Chart grid
+*/
 .chart-vertical-grid-lines {
     -fx-stroke: transparent;
 }

@@ -1,18 +1,23 @@
 package org.didoszak.audiocutter;
 
-import org.didoszak.audiocutter.CustomClasses.TextFieldCustom;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.SVGPath;
+import org.didoszak.audiocutter.CustomClasses.TextFieldCustom;
 
 
 public class GuiHandler {
     private Scene scene;
 
-    private VBox container;
+    private StackPane container;
     private Chart mainChart;
 
     boolean chartCreated;
@@ -20,14 +25,17 @@ public class GuiHandler {
     public GuiHandler(Scene scene) {
         this.scene = scene;
 
-        container = (VBox) scene.lookup("#audioContainer");
+        container = (StackPane) scene.lookup("#stackPane");
         mainChart = new Chart((LineChart) scene.lookup("#mainChart"));
 
         container.getChildren().remove(mainChart.getChart());
         container.requestFocus();
 
         setCustomTextField();
+
+        setButton();
     }
+
 
     /**
      * Sets up the listeners for user input
@@ -53,7 +61,7 @@ public class GuiHandler {
             double start = ((TextFieldCustom) scene.lookup("#startTextField")).getTimeValue();
             double end = ((TextFieldCustom) scene.lookup("#endTextField")).getTimeValue();
 
-            System.out.println(audioLength + "\t" + length + "\t|\t" + audioLength * 200 + "\t" + mainChart.dataSize);
+//            System.out.println(audioLength + "\t" + length + "\t|\t" + audioLength * 200 + "\t" + mainChart.dataSize);
 
             if(mouseEvent.getButton() == MouseButton.PRIMARY) {
                 if (length > end) {
@@ -119,11 +127,39 @@ public class GuiHandler {
      */
     public void setChart() {
         if(!chartCreated) {
-            container.getChildren().add(mainChart.getChart());
+            container.getChildren().add(0, mainChart.getChart());
             chartCreated = true;
         }
         mainChart.setChartValues();
     }
+
+    private void setButton() {
+        SVGPath path1 = new SVGPath();
+        path1.getStyleClass().add("svg");
+        path1.setContent("M12 6a3.939 3.939 0 0 0-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 0 0-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0 0 12 6zm-1 10h2v2h-2z");
+        path1.setStyle("-fx-fill: white;");
+        SVGPath path2 = new SVGPath();
+        path2.getStyleClass().add("svg");
+        path2.setContent("M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z");
+        path2.setStyle("-fx-fill: white;");
+        Group svg = new Group(
+                path1, path2
+        );
+
+        Button helpButton = (Button) scene.lookup("#helpButton");
+        helpButton.setGraphic(svg);
+
+        VBox box = new VBox();
+        Label label = new Label("How to");
+        box.getChildren().add(label);
+
+        TextField textField = new TextField("Use left and right mouse button to set start and end position");
+        TextField textField2 = new TextField("Click spacebar to play audio");
+
+        box.getChildren().add(textField);
+        box.getChildren().add(textField2);
+    }
+
 
     /**
      * Initiates the length of lengthTextField and endTextField

@@ -10,15 +10,18 @@
             fx:controller="org.didoszak.audiocutter.Controller" onDragOver="#handleDragOver" onDragDropped="#handleDragDrop">
     <top>
         <VBox styleClass="audio-container" fx:id="audioContainer" prefHeight="${container.height * 2/3}" maxHeight="${container.height * 2/3}">
+            <StackPane styleClass="stack-pane" fx:id="stackPane" alignment="TOP_RIGHT">
+                <Button prefWidth="24" prefHeight="24" fx:id="helpButton" styleClass="help-button" onMouseClicked="#showHelp"/>
+                <LineChart styleClass="line-chart" fx:id="mainChart" animated="false">
+                    <xAxis>
+                        <NumberAxis fx:id="xAxis" animated="false" side="BOTTOM"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis side="LEFT" animated="false"/>
+                    </yAxis>
+                </LineChart>
+            </StackPane>
             <Label styleClass="info-label" fx:id="infoLabel" prefWidth="${container.width}" prefHeight="${audioContainer.height * 0.9}">Drag And Drop</Label>
-            <LineChart styleClass="line-chart" fx:id="mainChart" animated="false">
-                <xAxis>
-                    <NumberAxis fx:id="xAxis" animated="false" side="BOTTOM"/>
-                </xAxis>
-                <yAxis>
-                    <NumberAxis side="LEFT" animated="false"/>
-                </yAxis>
-            </LineChart>
         </VBox>
     </top>
     <center>

@@ -3,8 +3,12 @@ package org.didoszak.audiocutter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import org.didoszak.audiocutter.CustomClasses.TextFieldCustom;
 
@@ -44,6 +48,40 @@ public class Main extends Application {
             double end = ((TextFieldCustom) scene.lookup("#endTextField")).getTimeValue();
             audioFile.trimAudioFile(start, end);
             (scene.lookup("#audioContainer")).requestFocus();
+        });
+
+        // handle help popup
+        Popup popup = new Popup();
+        Label label = new Label("chuj");
+        label.setMinWidth(80);
+        label.setMinHeight(50);
+        popup.getContent().add(label);
+
+        VBox popupBox = new VBox();
+        popupBox.getStyleClass().add("popup-box");
+
+        Text item1 = new Text("How to");
+        Text item2 = new Text("Use left and right mouse button to set start and end position");
+        Text item3 = new Text("Click spacebar to play audio");
+        item1.setStyle("font-weigh: bold;");
+
+        popupBox.getChildren().add(item1);
+        popupBox.getChildren().add(item2);
+        popupBox.getChildren().add(item3);
+        popup.getContent().add(popupBox);
+
+////        fxPopup.set.setStyle("-fx-background-color: white;");
+//        fxPopup.show(audioContainer, 0, 0);
+
+        controller.getHelpClicked().addListener((observableValue, aBoolean, t1) -> {
+            // calculate help button position on the screen in px
+            double x = primaryStage.getX() + controller.getHelpButton().layoutXProperty().get();
+            double y = primaryStage.getY() + controller.getHelpButton().getLayoutY();
+
+            if(!popup.isShowing())
+                popup.show(primaryStage, x, y - 50);
+            else
+                popup.hide();
         });
 
     }

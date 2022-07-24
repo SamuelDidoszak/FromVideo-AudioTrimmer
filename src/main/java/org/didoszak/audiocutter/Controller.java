@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
@@ -17,7 +18,9 @@ import java.nio.file.Paths;
 public class Controller {
     private SimpleStringProperty filePath;
     private SimpleBooleanProperty saveFile;
+    private SimpleBooleanProperty helpClicked;
     private boolean firstFile = true;
+
 
     public SimpleStringProperty getFilePath() {
         if(filePath == null)
@@ -31,11 +34,24 @@ public class Controller {
         return saveFile;
     }
 
+    public SimpleBooleanProperty getHelpClicked() {
+        if(helpClicked == null)
+            helpClicked = new SimpleBooleanProperty();
+        return helpClicked;
+    }
+
     @FXML
     private Label infoLabel;
 
     @FXML
     private VBox audioContainer;
+
+    @FXML
+    private Button helpButton;
+
+    public Button getHelpButton() {
+        return helpButton;
+    }
 
     @FXML
     private void handleDragOver(DragEvent event) {
@@ -88,13 +104,7 @@ public class Controller {
     }
 
 
-
-
-
-
-
-
-
-
-
+    public void showHelp(MouseEvent mouseEvent) {
+        helpClicked.set(!helpClicked.get());
+    }
 }
